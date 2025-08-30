@@ -18,7 +18,7 @@
         <!-- Right: Icons + User -->
         <div class="flex items-center space-x-6">
             <!-- Cart -->
-            <a href="/cart">
+            <a href="{{ route('cart') }}">
                 <img width="30" height="30" src="https://img.icons8.com/dotty/80/shopping-cart.png"
                     alt="shopping-cart" />
             </a>

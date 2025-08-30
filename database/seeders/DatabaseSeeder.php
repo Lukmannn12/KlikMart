@@ -13,8 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            CategorySeeder::class,
+        User::create([
+            'name' => 'admin',
+            'email' => 'admin123@gmail.com',
+            'password'=> bcrypt('admin123'),
+            'role' => 'admin',
         ]);
     }
 }

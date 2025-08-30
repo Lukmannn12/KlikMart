@@ -3,14 +3,12 @@
 namespace App\Livewire;
 
 use App\Models\Category;
-use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ProductTable extends Component
+class CategoryTable extends Component
 {
-
-use WithPagination;
+    use WithPagination;
 
     public $search = '';
 
@@ -23,14 +21,12 @@ use WithPagination;
 
     public function render()
     {
-        $categories = Category::all();
-        $products = Product::query()
+        $categories = Category::query()
             ->where('name', 'like', '%' . $this->search . '%')
             ->paginate(5);
 
-        return view('livewire.product-table', [
-            'products' => $products,
-            'categories' => $categories,
+        return view('livewire.category-table', [
+            'categories' => $categories
         ]);
     }
 }

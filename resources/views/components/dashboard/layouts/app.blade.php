@@ -11,29 +11,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     @vite('resources/css/app.css')
+    <script defer>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-ml-64');
+        }
+    </script>
 </head>
 
-<body class="bg-white min-h-screen flex flex-col">
+<body class="flex">
+    @include('components.dashboard.sidebar.index')
 
+    <div class="flex-1 flex flex-col">
+        {{-- navbar --}}
 
+        @include('components.dashboard.layouts.navbar')
 
-    <!-- Navbar -->
-    @include('components.navbar.index')
+        {{-- Main Content --}}
+        <main class="p-6">
+            {{ $slot }}
+        </main>
 
-    <!-- Main Content -->
-    <main class="container mx-auto p-4 flex-grow mt-20">
-        {{ $slot }}
-    </main>
-
-    <!-- Footer -->
-    @include('components.footer.index')
+    </div>
 
     @fluxScripts
 
-    <script src="//unpkg.com/alpinejs" defer></script>
 
-    {{-- Toast Notification --}}
-    @if(session('success') || session('error'))
+{{-- Toast Notification --}}
+@if(session('success') || session('error'))
     <div id="toast"
         class="fixed top-20 right-5 z-[9999]
         {{ session('success') ? 'text-green-600 border-green-300' : 'text-red-600 border-red-300' }}
@@ -67,7 +72,9 @@
             }
         }
     </script>
-    @endif
+@endif
+
+
 
 
 </body>

@@ -7,10 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory;
     protected $fillable = [
         'name',
         'image'
-        // tambahkan field lain sesuai kebutuhan
     ];
 }

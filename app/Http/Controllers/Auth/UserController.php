@@ -58,7 +58,7 @@ class UserController extends Controller
 
             // Redirect sesuai role
             if (Auth::user()->role === 'admin') {
-                return redirect()->intended('/admin/dashboard')->with('success', 'Login berhasil.');
+                return redirect()->intended('/dashboard')->with('success', 'Login berhasil.');
             } else {
                 return redirect()->intended('/')->with('success', 'Login berhasil.');
             }
