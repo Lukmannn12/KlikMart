@@ -18,9 +18,18 @@
         <!-- Right: Icons + User -->
         <div class="flex items-center space-x-6">
             <!-- Cart -->
-            <a href="{{ route('cart') }}">
+            <a href="{{ route('cart') }}" class="relative">
                 <img width="30" height="30" src="https://img.icons8.com/dotty/80/shopping-cart.png"
                     alt="shopping-cart" />
+
+                @php
+                $cartCount = \App\Models\CartItem::where('user_id', auth()->id())->count();
+                @endphp
+
+                <span
+                    class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                    {{ $cartCount }}
+                </span>
             </a>
             <!-- Notifications -->
             <a href="/notifications">
@@ -61,7 +70,7 @@
                         x-transition:leave-start="opacity-100 transform scale-100"
                         x-transition:leave-end="opacity-0 transform scale-95">
 
-                        <a href="{{ route('profile.show') }}"
+                        <a href="{{ route('user.profile.show') }}"
                             class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm font-medium">Profile</a>
 
                         <form action="{{ route('logout') }}" method="POST">

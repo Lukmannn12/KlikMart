@@ -14,7 +14,7 @@
 
             <!-- Dashboard -->
             <li class="pb-5">
-                <a href="{{ url('/dashboard') }}"
+                <a href="{{ route('dashboard.index') }}"
                     class="flex items-center px-3 py-2 rounded-lg transition
                     {{ request()->is('dashboard') ? 'bg-green-400 text-white font-semibold' : 'text-gray-800 hover:bg-gray-100 hover:text-blue-600' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

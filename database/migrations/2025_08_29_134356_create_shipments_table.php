@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('shipments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->string('courier', 50); // JNE, J&T, dll
+            $table->enum('courier', ['jne', 'jnt', 'pos', 'sicepat']); // JNE, J&T, dll
             $table->string('tracking_number')->nullable();
             $table->enum('status', ['processing', 'shipped', 'delivered'])->default('processing');
             $table->timestamp('shipped_at')->nullable();

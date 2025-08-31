@@ -32,28 +32,28 @@ class LandingController extends Controller
 
 
 
-    public function addToCart(Request $request)
-    {
-        if (!Auth::check()) {
-            return redirect()->back()->with('error', 'Silakan login terlebih dahulu untuk menambahkan produk ke keranjang.');
-        }
+    // public function addToCart(Request $request)
+    // {
+    //     if (!Auth::check()) {
+    //         return redirect()->back()->with('error', 'Silakan login terlebih dahulu untuk menambahkan produk ke keranjang.');
+    //     }
 
-        $product = Product::findOrFail($request->product_id);
+    //     $product = Product::findOrFail($request->product_id);
 
-        $cart = session()->get('cart', []);
+    //     $cart = session()->get('cart', []);
 
-        if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity']++;
-        } else {
-            $cart[$product->id] = [
-                'name' => $product->name,
-                'price' => $product->price,
-                'quantity' => 1,
-            ];
-        }
+    //     if (isset($cart[$product->id])) {
+    //         $cart[$product->id]['quantity']++;
+    //     } else {
+    //         $cart[$product->id] = [
+    //             'name' => $product->name,
+    //             'price' => $product->price,
+    //             'quantity' => 1,
+    //         ];
+    //     }
 
-        session()->put('cart', $cart);
+    //     session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
-    }
+    //     return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+    // }
 }

@@ -2,64 +2,72 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CartItem;
 use App\Models\Order;
+use App\Models\Order_Item;
+use App\Models\Payment;
+use App\Models\Shipment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'total_amount' => 'required|numeric|min:1',
+            'selected_items' => 'required|array',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
-    }
+        DB::beginTransaction();
+        try {
+            // 1. Buat order
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'total_amount' => $request->total_amount,
+                'status' => 'pending',
+            ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
+            // 2. Ambil item yang dicentang dari cart
+            $cartItems = CartItem::where('user_id', Auth::id())
+                ->whereIn('id', $request->selected_items)
+                ->with('product')
+                ->get();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
+            // 3. Masukkan ke order_items
+            foreach ($cartItems as $item) {
+                Order_Item::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price,
+                ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
+                // hapus dari cart
+                $item->delete();
+            }
+
+
+            Payment::create([
+                'order_id' => $order->id,
+                'payment_method' => $request->payment_method,
+                'amount' => $request->total_amount,
+                'status' => 'pending',
+            ]);
+
+            Shipment::create([
+                'order_id' => $order->id,
+                'courier' => $request->courier,
+                'status' => 'processing',
+            ]);
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Order berhasil dibuat!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal membuat order: ' . $e->getMessage());
+        }
     }
 }

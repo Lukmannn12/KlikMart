@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Auth;
 class ProfileController extends Controller
 {
 
-    public function show()
-    {
+
+
+    public function profile() {
+
         $user = Auth::user();
         $profile = $user->profile;
 
@@ -22,7 +24,8 @@ class ProfileController extends Controller
             ]);
         }
 
-        return view('profile.index', compact('user', 'profile'));
+        return view('profile.profile', compact('user', 'profile'));
+
     }
 
     public function edit(Profile $profile)
