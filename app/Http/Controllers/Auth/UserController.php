@@ -78,4 +78,8 @@ class UserController extends Controller
 
         return redirect('/login')->with('success', 'Berhasil logout.');
     }
+
+    public function user() {
+        return view('dashboard.User.index');
+    }
 }

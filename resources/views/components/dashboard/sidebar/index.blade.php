@@ -50,7 +50,7 @@
                     </svg>
                 </button>
 
-                <ul x-show="openProduk" x-transition class="pl-6 mt-2 space-y-2 text-sm" x-cloak>
+                <ul x-show="openProduk" x-transition class="pl-6 mt-2 space-y-3 text-sm" x-cloak>
                     <li>
                         <a href="{{ route('product.index') }}"
                             class="flex items-center space-x-2 px-3 py-2 rounded-lg transition 
@@ -84,29 +84,36 @@
 
 
             <!-- Transaksi -->
-            <li class="py-2 border-b border-gray-200">
+            <li class="border-t border-b border-gray-200 py-2"
+                x-data="{ openTransaksi: {{ request()->is('dashboard/transaksi*') ? 'true' : 'false' }} }">
+
                 <button @click="openTransaksi = !openTransaksi"
-                    class="flex items-center justify-between w-full text-sm px-3 py-2 rounded-lg text-gray-800 hover:bg-green-400 hover:text-white">
-                    <span class="flex items-center">
-                        <!-- Icon Transaksi (shopping cart) -->
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="flex items-center justify-between w-full px-3 py-2 rounded-lg
+        {{ request()->is('dashboard/transaksi*') ? 'bg-green-400 text-white' : 'text-gray-800 hover:bg-green-400 hover:text-white' }} transition">
+
+                    <div class="flex items-center space-x-2">
+                        <!-- Ikon Transaksi -->
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 17v-2h6v2m-7-8h8M5 8h14l1 12H4L5 8z" />
+                                d="M9 12h6m2 2H7m4 4v-8" />
                         </svg>
-                        Transaksi
-                    </span>
-                    <svg :class="{ 'rotate-90': openTransaksi }" class="w-4 h-4 transform transition-transform"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span class="text-sm">Transaksi</span>
+                    </div>
+
+                    <svg :class="{'rotate-90': openTransaksi}" class="w-4 h-4 transition-transform"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </button>
 
-                <ul x-show="openTransaksi" x-transition class="mr-3 ml-6 mt-3 space-y-3 text-sm">
+                <ul x-show="openTransaksi" x-transition class="pl-6 mt-2 space-y-3 text-sm" x-cloak>
                     <!-- Orders -->
                     <li>
-                        <a href="{{ url('/orders') }}"
-                            class="flex items-center gap-2 block px-3 py-1 rounded-lg hover:bg-green-400 hover:text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        <a href="{{ route('order.index') }}"
+                            class="flex items-center space-x-2 px-3 py-2 rounded-lg transition
+                {{ request()->is('dashboard/transaksi/orders*') ? 'bg-green-400 text-white' : 'text-gray-600 hover:bg-green-400 hover:text-white' }}">
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
@@ -117,9 +124,10 @@
 
                     <!-- Payments -->
                     <li>
-                        <a href="{{ url('/payments') }}"
-                            class="flex items-center gap-2 block px-3 py-1 rounded-lg hover:bg-green-400 hover:text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        <a href="{{ route('payment.index') }}"
+                            class="flex items-center space-x-2 px-3 py-2 rounded-lg transition
+                {{ request()->is('dashboard/transaksi/payments*') ? 'bg-green-400 text-white' : 'text-gray-600 hover:bg-green-400 hover:text-white' }}">
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2m4-5h-8m0 0l3-3m-3 3l3 3" />
@@ -130,9 +138,10 @@
 
                     <!-- Shipments -->
                     <li>
-                        <a href="{{ url('/shipments') }}"
-                            class="flex items-center gap-2 block px-3 py-1 rounded-lg hover:bg-green-400 hover:text-white">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        <a href="{{ route('shipment.index') }}"
+                            class="flex items-center space-x-2 px-3 py-2 rounded-lg transition
+                {{ request()->is('dashboard/transaksi/shipments*') ? 'bg-green-400 text-white' : 'text-gray-600 hover:bg-green-400 hover:text-white' }}">
+                            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 7h2l.4 2M7 13h10l4-8H5.4M7 13l-1.2 6h12.4L17 13M7 13H5.4M17 13h1.6" />
@@ -144,10 +153,15 @@
             </li>
 
 
+
             <!-- User -->
-            <li class="py-2 border-b border-gray-200">
+            <li class="py-2 border-b border-gray-200"
+                x-data="{ openUser: {{ request()->is('dashboard/User*') ? 'true' : 'false' }} }">
+
                 <button @click="openUser = !openUser"
-                    class="flex items-center text-sm justify-between w-full px-3 py-2 rounded-lg text-gray-800 hover:bg-green-400 hover:text-white">
+                    class="flex items-center text-sm justify-between w-full px-3 py-2 rounded-lg
+        {{ request()->is('dashboard/User*') ? 'bg-green-400 text-white' : 'text-gray-800 hover:bg-green-400 hover:text-white' }}">
+
                     <span class="flex items-center">
                         <!-- Ikon utama User -->
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,6 +170,7 @@
                         </svg>
                         User
                     </span>
+
                     <!-- Ikon toggle -->
                     <svg :class="{ 'rotate-90': openUser }" class="w-4 h-4 transform transition-transform" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -163,11 +178,12 @@
                     </svg>
                 </button>
 
-                <ul x-show="openUser" x-transition class="mr-3 ml-6 mt-3 space-y-3 text-sm">
+                <ul x-show="openUser" x-transition class="mr-3 ml-6 mt-3 space-y-3 text-sm" x-cloak>
                     <!-- Daftar User -->
                     <li>
-                        <a href="{{ url('/users') }}"
-                            class="flex items-center gap-2 block px-3 py-1 rounded-lg hover:bg-green-400 hover:text-white">
+                        <a href="{{ route('user.index') }}"
+                            class="flex items-center gap-2 block px-3 py-2 rounded-lg
+                {{ request()->is('dashboard/User/DataUser') ? 'bg-green-400 text-white' : 'text-gray-600 hover:bg-green-400 hover:text-white' }}">
                             <!-- Ikon Daftar User -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -179,6 +195,7 @@
                     </li>
                 </ul>
             </li>
+
 
 
         </ul>

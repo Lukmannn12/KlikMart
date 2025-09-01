@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    public function pesanandetail()
+    {
+
+        return view('history.index');
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -60,6 +65,7 @@ class OrderController extends Controller
                 'order_id' => $order->id,
                 'courier' => $request->courier,
                 'status' => 'processing',
+                'tracking_number' => $this->generateTrackingNumber(10),
             ]);
 
             DB::commit();
@@ -69,5 +75,19 @@ class OrderController extends Controller
             DB::rollBack();
             return back()->with('error', 'Gagal membuat order: ' . $e->getMessage());
         }
+    }
+
+    private function generateTrackingNumber($length = 10)
+    {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $trackingNumber = '';
+        for ($i = 0; $i < $length; $i++) {
+            $trackingNumber .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $trackingNumber;
+    }
+
+    public function order() {
+        return view('dashboard.Order.index');
     }
 }

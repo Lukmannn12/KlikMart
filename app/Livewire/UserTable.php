@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Livewire;
+
+use App\Models\User;
+use Livewire\Component;
+use Livewire\WithPagination;
+
+class UserTable extends Component
+{
+    use WithPagination;
+
+    public $search = '';
+    public function render()
+    {
+      $users = User::query()
+      ->where('name', 'like', '%' . $this->search . '%')
+      ->paginate(5);
+
+
+        return view('livewire.user-table', [
+            'users' => $users
+        ]);
+    }
+}

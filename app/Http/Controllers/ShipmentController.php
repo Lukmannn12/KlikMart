@@ -10,9 +10,9 @@ class ShipmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function shipment()
     {
-        //
+        return view('dashboard.Shipment.index');
     }
 
     /**

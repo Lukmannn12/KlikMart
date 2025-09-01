@@ -10,7 +10,7 @@
         </h1>
 
         <!-- Table Section -->
-        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
             <div>
                 <!-- Header Action -->
                 <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
@@ -113,20 +113,20 @@
 
                 <!-- Table -->
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
                         <thead class="bg-gray-100 text-center">
                             <tr>
-                                <th class="px-6 py-3 text-sm font-medium">No</th>
-                                <th class="px-6 py-3 text-sm font-medium">Kategori</th>
-                                <th class="px-6 py-3 text-sm font-medium">Nama Produk</th>
-                                <th class="px-6 py-3 text-sm font-medium">Deskripsi</th>
-                                <th class="px-6 py-3 text-sm font-medium">Harga</th>
-                                <th class="px-6 py-3 text-sm font-medium">Stok</th>
-                                <th class="px-6 py-3 text-sm font-medium">Gambar</th>
-                                <th class="px-6 py-3 text-sm font-medium">Aksi</th>
+                                <th class="p-4 font-medium">No</th>
+                                <th class="p-4 font-medium">Kategori</th>
+                                <th class="p-4 font-medium">Nama Produk</th>
+                                <th class="p-4 font-medium">Deskripsi</th>
+                                <th class="p-4 font-medium">Harga</th>
+                                <th class="p-4 font-medium">Stok</th>
+                                <th class="p-4 font-medium">Gambar</th>
+                                <th class="p-4 font-medium">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200 text-center text-sm">
+                        <tbody class="divide-y divide-gray-200 text-center">
                             @if($products->isEmpty())
                             <tr>
                                 <td colspan="8" class="py-6 text-gray-500">Tidak ada data</td>
@@ -134,17 +134,17 @@
                             @else
                             @foreach ($products as $product)
                             <tr>
-                                <td class="px-6 py-4">
+                                <td class="p-4">
                                     {{ $products->firstItem() + $loop->index }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="p-4">
                                     {{ $product->category->name ?? '-' }}
                                 </td>
-                                <td class="px-6 py-4">{{ $product->name }}</td>
-                                <td class="px-6 py-4">{{ Str::limit($product->description, 30) }}</td>
-                                <td class="px-6 py-4">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
-                                <td class="px-6 py-4">{{ $product->stock }}</td>
-                                <td class="px-6 py-4">
+                                <td class="p-4">{{ $product->name }}</td>
+                                <td class="p-4">{{ Str::limit($product->description, 30) }}</td>
+                                <td class="p-4">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
+                                <td class="p-4">{{ $product->stock }}</td>
+                                <td class="p-4">
                                     @if($product->image)
                                     <img src="{{ asset('storage/' . $product->image) }}" alt="image"
                                         class="w-12 h-12 object-cover rounded">

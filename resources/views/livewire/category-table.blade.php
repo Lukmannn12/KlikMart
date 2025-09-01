@@ -10,7 +10,7 @@
         </h1>
 
         <!-- Table Section -->
-        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
             <div>
                 <!-- Header Action -->
                 <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
@@ -71,12 +71,12 @@
 
                 <!-- Table -->
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
                         <thead class="bg-gray-100 text-center">
                             <tr>
-                                <th class="px-6 py-3 text-sm font-medium">No</th>
-                                <th class="px-6 py-3 text-sm font-medium">Kategori</th>
-                                <th class="px-6 py-3 text-sm font-medium">Aksi</th>
+                                <th class="p-4">No</th>
+                                <th class="p-4">Kategori</th>
+                                <th class="p-4">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 text-center text-sm">
@@ -87,11 +87,11 @@
                             @else
                             @foreach ($categories as $category)
                             <tr>
-                                <td class="px-6 py-4">
+                                <td class="p-4">
                                     {{ $categories->firstItem() + $loop->index }}
                                 </td>
-                                <td class="px-6 py-4">{{ $category->name }}</td>
-                                <td class="px-6 py-4 flex justify-center space-x-2">
+                                <td class="p-4">{{ $category->name }}</td>
+                                <td class="p-4 flex justify-center space-x-2">
                                     <!-- Tombol Edit -->
                                     <div x-data="{ openModal: false }">
                                         <button @click="openModal = true"

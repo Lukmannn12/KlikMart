@@ -73,6 +73,9 @@
                         <a href="{{ route('user.profile.show') }}"
                             class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm font-medium">Profile</a>
 
+                         <a href="/pesanandetail"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm font-medium">History Pesanan</a>
+
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit"

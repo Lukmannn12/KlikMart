@@ -6,8 +6,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShipmentController;
 use App\Livewire\Counter;
 use App\Livewire\ProductTable;
 use App\Livewire\Riwayat;
@@ -29,15 +31,16 @@ Route::get('/product/{slug}', [LandingController::class, 'show'])->name('product
 // Kategori
 
 
-// Login
-Route::get('/login', [UserController::class, 'login'])->name('login');
-Route::post('/login', [UserController::class, 'authenticate'])->name('login.authenticate');
-Route::get('/{slug}', [LandingController::class, 'show'])->name('product.showw');
-Route::post('/cart/add', [CartItemController::class, 'addToCart'])->name('cart.add');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::resource('/dashboard/category', CategoryController::class);
+    Route::get('/pesanandetail', [OrderController::class, 'pesanandetail'])->name('pesanandetail.index');
+    Route::get('/dashboard/transaksi/orders', [OrderController::class, 'order'])->name('order.index');
+    Route::get('/dashboard/transaksi/payments', [PaymentController::class, 'payment'])->name('payment.index');
+    Route::get('/dashboard/transaksi/shipments', [ShipmentController::class, 'shipment'])->name('shipment.index');
+     Route::get('/dashboard/User/DataUser', [UserController::class, 'user'])->name('user.index');
     Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
     Route::get('/dashboard/product', [ProductController::class, 'index'])->name('product.index');
     Route::post('/dashboard/product', [ProductController::class, 'store'])->name('product.store');
@@ -49,5 +52,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
+// Login
+Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::post('/login', [UserController::class, 'authenticate'])->name('login.authenticate');
+Route::post('/cart/add', [CartItemController::class, 'addToCart'])->name('cart.add');
 
 
