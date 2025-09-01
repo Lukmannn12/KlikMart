@@ -15,51 +15,27 @@ class ShipmentController extends Controller
         return view('dashboard.Shipment.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function update(Request $request, $id)
     {
-        //
-    }
+        $request->validate([
+            'status' => 'required|in:processing,shipped,delivered',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $shipment = Shipment::findOrFail($id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Shipment $shipment)
-    {
-        //
-    }
+        $shipment->status = $request->status;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Shipment $shipment)
-    {
-        //
-    }
+        // otomatis isi tanggal sesuai status
+        if ($request->status === 'shipped') {
+            $shipment->shipped_at = now();
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Shipment $shipment)
-    {
-        //
-    }
+        if ($request->status === 'delivered') {
+            $shipment->delivered_at = now();
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Shipment $shipment)
-    {
-        //
+        $shipment->save();
+
+        return redirect()->route('shipment.index')->with('success', 'Status pengiriman berhasil diperbarui.');
     }
 }

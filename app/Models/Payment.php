@@ -10,8 +10,16 @@ class Payment extends Model
         'order_id',
         'payment_method',
         'amount',
+        'provider',
+        'transaction_id',
+        'midtrans_order_id',
+        'qris_url',
         'status',
         'paid_at',
+    ];
+
+    protected $casts = [
+        'paid_at' => 'datetime',
     ];
 
     public function order()

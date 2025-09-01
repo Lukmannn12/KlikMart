@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class PaymentController extends Controller
 {
@@ -15,51 +18,23 @@ class PaymentController extends Controller
          return view('dashboard.Payment.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'status' => 'required|in:pending,success,failed',
+        ]);
+
+        $payment = Payment::findOrFail($id);
+        $payment->status = $request->status;
+
+        if ($request->status === 'success') {
+            $payment->paid_at = now();
+        }
+
+        $payment->save();
+
+        return redirect()->route('payment.index')->with('success', 'Status pembayaran berhasil diperbarui.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Payment $payment)
-    {
-        //
-    }
 }

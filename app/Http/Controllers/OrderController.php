@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Order_Item;
+use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\Shipment;
 use Illuminate\Http\Request;
@@ -21,8 +22,10 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'total_amount' => 'required|numeric|min:1',
+            'total_amount'   => 'required|numeric|min:1',
             'selected_items' => 'required|array',
+            'payment_method' => 'required|in:qris,bank_transfer',
+            'courier'        => 'required|string',
         ]);
 
         DB::beginTransaction();
@@ -42,7 +45,7 @@ class OrderController extends Controller
 
             // 3. Masukkan ke order_items
             foreach ($cartItems as $item) {
-                Order_Item::create([
+                OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
                     'quantity' => $item->quantity,
@@ -53,13 +56,53 @@ class OrderController extends Controller
                 $item->delete();
             }
 
+            // 4. Buat Payment sesuai metode
+            $paymentData = [
+                'order_id'         => $order->id,
+                'payment_method'   => $request->payment_method,
+                'amount'           => $request->total_amount,
+                'provider'         => 'midtrans',
+                'status'           => 'pending',
+            ];
 
-            Payment::create([
-                'order_id' => $order->id,
-                'payment_method' => $request->payment_method,
-                'amount' => $request->total_amount,
-                'status' => 'pending',
-            ]);
+            if ($request->payment_method === 'qris') {
+                // Call Midtrans CoreAPI
+                \Midtrans\Config::$serverKey    = config('midtrans.server_key');
+                \Midtrans\Config::$isProduction = config('midtrans.is_production');
+                \Midtrans\Config::$isSanitized  = true;
+
+                $params = [
+                    "payment_type" => "qris",
+                    "transaction_details" => [
+                        "order_id"      => "ORDER-" . time(),
+                        "gross_amount"  => $request->total_amount,
+                    ],
+                    "customer_details" => [
+                        "first_name" => Auth::user()->name ?? 'Guest',
+                        "email"      => Auth::user()->email ?? 'guest@example.com',
+                    ]
+                ];
+
+                $response = \Midtrans\CoreApi::charge($params);
+
+                $paymentData['transaction_id']    = $response->transaction_id ?? null;
+                $paymentData['midtrans_order_id'] = $response->order_id ?? null;
+
+                // cari qris_url dari actions
+                $qrisUrl = null;
+                if (!empty($response->actions)) {
+                    foreach ($response->actions as $action) {
+                        if ($action->name === 'generate-qr-code') {
+                            $qrisUrl = $action->url;
+                            break;
+                        }
+                    }
+                }
+                $paymentData['qris_url'] = $qrisUrl;
+            }
+
+            $payment = Payment::create($paymentData);
+
 
             Shipment::create([
                 'order_id' => $order->id,
@@ -69,6 +112,11 @@ class OrderController extends Controller
             ]);
 
             DB::commit();
+
+            // Kalau QRIS → arahkan ke halaman pembayaran QRIS
+            if ($request->payment_method === 'qris') {
+                return redirect()->route('checkout.qris', $payment->id);
+            }
 
             return redirect()->back()->with('success', 'Order berhasil dibuat!');
         } catch (\Exception $e) {
@@ -87,7 +135,24 @@ class OrderController extends Controller
         return $trackingNumber;
     }
 
-    public function order() {
+    public function order()
+    {
         return view('dashboard.Order.index');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,paid,shipped,completed,cancelled',
+        ]);
+
+        $order = order::findOrFail($id);
+
+        $order->status = $request->status;
+
+
+        $order->save();
+
+        return redirect()->route('order.index')->with('success', 'Status pengiriman berhasil diperbarui.');
     }
 }

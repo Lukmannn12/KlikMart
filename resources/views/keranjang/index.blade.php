@@ -56,8 +56,7 @@
                         <select name="payment_method" required
                             class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-green-500 focus:border-green-500">
                             <option value="bank_transfer">Bank Transfer</option>
-                            <option value="ewallet">E-Wallet</option>
-                            <option value="cod">COD (Bayar di Tempat)</option>
+                            <option value="qris">QRIS</option>
                         </select>
                     </div>
     

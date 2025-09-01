@@ -17,9 +17,9 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function orderItems()
+    public function items()
     {
-        return $this->hasMany(Order_Item::class);
+        return $this->hasMany(OrderItem::class);
     }
 
     public function payment()
@@ -31,4 +31,16 @@ class Order extends Model
     {
         return $this->hasOne(Shipment::class);
     }
+
+    public function statusColor()
+{
+    return match($this->status) {
+        'pending' => 'bg-yellow-500',
+        'paid' => 'bg-blue-500',
+        'shipped' => 'bg-teal-500',
+        'completed' => 'bg-green-500',
+        'cancelled' => 'bg-red-500',
+        default => 'bg-gray-500',
+    };
+}
 }

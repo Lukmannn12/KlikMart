@@ -26,7 +26,7 @@
 
             <!-- Produk List -->
             <div class="mb-4 space-y-3">
-                @foreach($order->orderItems as $item)
+                @foreach($order->items as $item)
                 <div
                     class="flex items-center justify-between bg-gray-50 rounded-lg p-3 hover:shadow-sm transition-shadow">
                     <div class="flex items-center space-x-3">

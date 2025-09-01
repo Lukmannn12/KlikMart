@@ -3,8 +3,10 @@
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
@@ -34,11 +36,17 @@ Route::get('/product/{slug}', [LandingController::class, 'show'])->name('product
 
 
 Route::middleware(['auth'])->group(function () {
+    Route::post('/midtrans/callback', [MidtransController::class, 'callback']);
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/checkout/qris/{payment}', [CheckoutController::class, 'showQris'])->name('checkout.qris');
     Route::resource('/dashboard/category', CategoryController::class);
     Route::get('/pesanandetail', [OrderController::class, 'pesanandetail'])->name('pesanandetail.index');
     Route::get('/dashboard/transaksi/orders', [OrderController::class, 'order'])->name('order.index');
     Route::get('/dashboard/transaksi/payments', [PaymentController::class, 'payment'])->name('payment.index');
+    Route::put('/dashboard/transaksi/orders/{id}', [OrderController::class, 'update'])->name('order.update');;
+    Route::put('/dashboard/transaksi/payments/{id}', [PaymentController::class, 'update'])->name('payment.update');
+    Route::put('/dashboard/transaksi/shipments/{id}', [ShipmentController::class, 'update'])->name('shipment.update');
     Route::get('/dashboard/transaksi/shipments', [ShipmentController::class, 'shipment'])->name('shipment.index');
      Route::get('/dashboard/User/DataUser', [UserController::class, 'user'])->name('user.index');
     Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');

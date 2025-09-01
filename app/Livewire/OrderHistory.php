@@ -17,7 +17,7 @@ class OrderHistory extends Component
 
     public function render()
     {
-        $query = Order::with(['orderItems.product', 'payment', 'shipment'])
+        $query = Order::with(['items.product', 'payment', 'shipment'])
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc');
 

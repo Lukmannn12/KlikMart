@@ -14,9 +14,17 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->enum('payment_method', ['bank_transfer', 'ewallet', 'cod']);
+
+            $table->enum('payment_method', ['qris', 'bank_transfer']);
             $table->decimal('amount', 12, 2);
+
+            // Tambahan untuk integrasi Midtrans
+            $table->string('provider')->default('midtrans');
+            $table->string('transaction_id')->nullable(); // dari Midtrans
+            $table->string('midtrans_order_id')->nullable(); // order_id Midtrans
+            $table->text('qris_url')->nullable(); // untuk tampilkan QRIS
             $table->enum('status', ['pending', 'success', 'failed'])->default('pending');
+
             $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });

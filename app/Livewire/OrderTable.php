@@ -10,7 +10,7 @@ class OrderTable extends Component
 {
     public function render()
     {
-        $query = Order::with(['orderItems.product', 'payment', 'shipment'])
+        $query = Order::with(['items.product', 'payment', 'shipment'])
             ->orderBy('created_at', 'desc');
        $orders = $query->get();
 
