@@ -3,7 +3,7 @@
 
     <!-- Logo -->
     <div class="p-6 flex items-center space-x-3 border-b border-gray-200">
-        <img src="/logo.png" alt="Logo" class="w-10 h-10 rounded-full">
+        <img src="{{ asset('favicon.ico') }}" alt="Logo" class="w-10 h-10 rounded-full">
         <span class="text-xl font-bold text-gray-800">KlikMart</span>
     </div>
 
@@ -13,10 +13,10 @@
         <ul class="space-y-2">
 
             <!-- Dashboard -->
-            <li class="pb-5">
+            <li class="">
                 <a href="{{ route('dashboard.index') }}"
                     class="flex items-center px-3 py-2 rounded-lg transition
-                    {{ request()->is('dashboard') ? 'bg-green-400 text-white font-semibold' : 'text-gray-800 hover:bg-gray-100 hover:text-blue-600' }}">
+                    {{ request()->is('dashboard') ? 'bg-green-400 text-white font-semibold' : 'text-gray-800 hover:bg-green-400 hover:text-white' }}">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 9.75L12 4l9 5.75V20a2 2 0 01-2 2H5a2 2 0 01-2-2V9.75z" />
@@ -84,7 +84,7 @@
 
 
             <!-- Transaksi -->
-            <li class="border-t border-b border-gray-200 py-2"
+            <li class="border-b border-gray-200 py-2"
                 x-data="{ openTransaksi: {{ request()->is('dashboard/transaksi*') ? 'true' : 'false' }} }">
 
                 <button @click="openTransaksi = !openTransaksi"
